@@ -1,6 +1,14 @@
+@font-face {
+  font-family: 'Lato-Regular';
+  src: local('☺'), url('./assets/fonts/Lato-Regular.woff') format('woff'), url('./assets/fonts/Lato-Regular.ttf') format('truetype'), url('./assets/fonts/Lato-Regular.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html, body {
   overflow-y: hidden;
   background: #EEE;
+  font-family: 'Lato-Regular', sans-serif;
 }
 
 .ProseMirror, .ProseMirror-content {

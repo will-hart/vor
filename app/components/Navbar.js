@@ -63,10 +63,10 @@ class Navbar extends React.Component {
           <p className="is-inline is-unselectable">
             <span style={{ color: '#BBB', paddingLeft: '1em' }}>
               {fileDir}
-              {fileDir === '' ? '' : path.sep}
+              {fileDir === 'New Document' ? '' : path.sep}
             </span>
             <strong>{fileName}</strong>
-            {this.props.dirty ? '*' : ''}
+            {fileDir !== 'New Document' && this.props.dirty ? '*' : ''}
           </p>
         </div>
 
