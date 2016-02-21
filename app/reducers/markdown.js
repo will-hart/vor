@@ -23,7 +23,7 @@ const markdown = (state = initialState, action) => {
       return state;
 
     case UPDATE_TEXT:
-      return Object.assign({}, state, { text: action.text });
+      return Object.assign({}, state, { text: action.text, dirty: true });
 
     default:
       return state;

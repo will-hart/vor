@@ -8,47 +8,30 @@ const styles = {
 
 class Navbar extends React.Component {
   static propTypes = {
-    words: React.PropTypes.number.isRequired
+    words: React.PropTypes.number.isRequired,
+    onCreate: React.PropTypes.func.isRequired,
+    onOpen: React.PropTypes.func.isRequired,
+    onSave: React.PropTypes.func.isRequired
   };
-
-  constructor(props) {
-    super(props);
-
-    this._createFile = this._createFile.bind(this);
-    this._saveFile = this._saveFile.bind(this);
-    this._openFile = this._openFile.bind(this);
-  }
-
-  _createFile() {
-    console.log('creating');
-  }
-
-  _saveFile() {
-    console.log('saving');
-  }
-
-  _openFile() {
-    console.log('opening');
-  }
 
   render() {
     return (
       <nav style={styles.navbar}>
         <div className="is-pulled-left">
           <p className="is-inline">
-            <a style={styles.navlink} onClick={() => this._createFile()}>
+            <a style={styles.navlink} onClick={this.props.onCreate}>
               <Icon name="file-o" />
             </a>
           </p>
 
           <p className="is-inline">
-            <a style={styles.navlink} onClick={() => this._saveFile()}>
+            <a style={styles.navlink} onClick={this.props.onSave}>
               <Icon name="save" />
             </a>
           </p>
 
           <p className="is-inline">
-            <a style={styles.navlink} onClick={() => this._openFile()}>
+            <a style={styles.navlink} onClick={this.props.onOpen}>
               <Icon name="folder-open-o" />
             </a>
           </p>

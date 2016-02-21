@@ -1,12 +1,45 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { open, save, update, create } from '../actions/markdown';
+
+import Navbar from '../components/Navbar';
 import Home from '../components/Home';
 
-class HomePage extends Component {
+class DumbHomePage extends Component {
+  static propTypes = {
+    document: React.PropTypes.object.isRequired,
+
+    create: React.PropTypes.func.isRequired,
+    save: React.PropTypes.func.isRequired,
+    update: React.PropTypes.func.isRequired,
+    open: React.PropTypes.func.isRequired
+  };
+
   render() {
+    const { document } = this.props;
+    const { text } = document;
+
+    const words = text.match(/([^\s][\w]+)/) ? text.match(/(\w+)/g).length : 0;
+
     return (
-      <Home text="# fred" />
+      <div>
+        <Navbar words={words} onCreate={this.props.create} onSave={this.props.save} onOpen={this.props.open} />
+        <Home text={text} onUpdate={this.props.update} />
+      </div>
     );
   }
 }
 
-export default HomePage;
+function mapStateToProps(state) {
+  return {
+    document: state.markdown
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ open, save, update, create }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DumbHomePage);
