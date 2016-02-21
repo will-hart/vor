@@ -20,6 +20,7 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
+      markdown: this.props.text,
       options: {
         docFormat: 'markdown',
         autoInput: true,
@@ -33,19 +34,28 @@ export default class Home extends Component {
     this.performUpdate = debounce(this.props.onUpdate, 300);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // console.log("new props", nextProps, this.state);
+    if (nextProps.text !== this.state.markdown) {
+      this.setState({
+        markdown: nextProps.text
+      });
+    }
+  }
+
   _onChange(newValue) {
     const val = newValue === '' ? ' ' : newValue;
     this.performUpdate(val);
   }
 
   render() {
-    const { options } = this.state;
+    const { markdown, options } = this.state;
 
     return (
       <div className="columns is-marginless" style={{ position: 'absolute', width: '100%', top: '40px' }}>
         <div className="column content is-fullwidth pm-container">
           <ProseMirror
-            value={this.props.text}
+            value={markdown}
             onChange={this._onChange}
             options={options}
             ref="pm"

@@ -6,7 +6,7 @@ import {
 } from '../actions/markdown';
 
 const initialState = {
-  text: '',
+  text: ' ',
   path: '',
   dirty: false
 };
