@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'react-fa';
 import path from 'path';
+import { mouseTrap } from 'react-mousetrap';
 
 const styles = {
   navbar: { position: 'fixed', top: '0', zIndex: '5', width: '100%', background: 'white', padding: '3px', height: '33px' },
@@ -13,10 +14,18 @@ class Navbar extends React.Component {
     words: React.PropTypes.number.isRequired,
     dirty: React.PropTypes.bool.isRequired,
 
+    bindShortcut: React.PropTypes.func.isRequired,
+
     onCreate: React.PropTypes.func.isRequired,
     onOpen: React.PropTypes.func.isRequired,
     onSave: React.PropTypes.func.isRequired
   };
+
+  componentWillMount() {
+    this.props.bindShortcut('ctrl+s', this.props.onSave);
+    this.props.bindShortcut('ctrl+o', this.props.onOpen);
+    this.props.bindShortcut('ctrl+n', this.props.onCreate);
+  }
 
   render() {
     const filePath = this.props.path;
@@ -69,4 +78,4 @@ class Navbar extends React.Component {
   }
 }
 
-export default Navbar;
+export default mouseTrap(Navbar);
