@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from 'react-fa';
+import path from 'path';
 
 const styles = {
   navbar: { position: 'fixed', top: '0', zIndex: '5', width: '100%', background: 'white', padding: '3px', height: '33px' },
@@ -16,6 +17,17 @@ class Navbar extends React.Component {
   };
 
   render() {
+    const filePath = this.props.path;
+    let fileDir;
+    let fileName;
+
+    if (filePath && filePath !== '') {
+      fileDir = path.dirname(filePath);
+      fileName = path.basename(filePath);
+    } else {
+      fileDir = 'New Document';
+    }
+
     return (
       <nav style={styles.navbar}>
         <div className="is-pulled-left">
@@ -38,7 +50,11 @@ class Navbar extends React.Component {
           </p>
 
           <p className="is-inline is-unselectable">
-            { this.props.path === '' ? ' New File' : this.props.path }
+            <span style={{ color: '#BBB', paddingLeft: '1em' }}>
+              {fileDir}
+              {path.sep}
+            </span>
+            <strong>{fileName}</strong>
           </p>
         </div>
 
