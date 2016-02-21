@@ -25,8 +25,15 @@ class DumbHomePage extends Component {
 
     return (
       <div>
-        <Navbar words={words} onCreate={this.props.create} onSave={this.props.save} onOpen={this.props.open} />
-        <Home text={text} onUpdate={this.props.update} />
+        <Navbar words={words} path={document.path}
+          onCreate={this.props.create}
+          onSave={this.props.save}
+          onOpen={this.props.open}
+        />
+
+        <Home text={text}
+          onUpdate={this.props.update}
+        />
       </div>
     );
   }
