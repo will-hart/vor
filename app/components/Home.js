@@ -4,7 +4,7 @@ import ProseMirror from 'react-prosemirror';
 import 'prosemirror/dist/inputrules/autoinput';
 import 'prosemirror/dist/menu/icons';
 import 'prosemirror/dist/menu/menu';
-import 'prosemirror/dist/menu/tooltipmenu';
+import 'prosemirror/dist/menu/menubar';
 import 'prosemirror/dist/markdown';
 import debounce from 'lodash.debounce';
 
@@ -52,9 +52,10 @@ export default class Home extends Component {
     const { markdown, options } = this.state;
 
     return (
-      <div className="columns is-marginless" style={{ position: 'absolute', width: '100%', top: '40px' }}>
-        <div className="column content is-fullwidth pm-container">
+      <div className="columns is-marginless" style={{ position: 'absolute', top: '33px', left: '0', right: '0', bottom: '0', overflow: 'hidden' }}>
+        <div className="column content is-fullwidth  is-marginless pm-container">
           <ProseMirror
+            style={{ overflowY: 'auto' }}
             value={markdown}
             onChange={this._onChange}
             options={options}

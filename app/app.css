@@ -1,5 +1,5 @@
 html, body {
-  overflow-y: auto;
+  overflow-y: hidden;
   background: #EEE;
 }
 
@@ -9,10 +9,19 @@ html, body {
   outline: none;
   font-size: 1.1em;
   line-height: 1.5em;
-  margin-bottom: 0em;
   z-index: 1;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
 }
 
+.ProseMirror-content {
+  padding-top: 30px;
+}
 
 .ProseMirror ul, .ProseMirror ol {
   padding-left: 1em;
