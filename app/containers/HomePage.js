@@ -21,7 +21,13 @@ class DumbHomePage extends Component {
     const { document } = this.props;
     const { text } = document;
 
-    const words = text.match(/([^\s][\w]+)/) ? text.match(/(\w+)/g).length : 0;
+    let words;
+
+    if (text === undefined || text.length === 0) {
+      words = 0;
+    } else {
+      words = text.match(/([^\s][\w]+)/) ? text.match(/(\w+)/g).length : 0;
+    }
 
     return (
       <div>

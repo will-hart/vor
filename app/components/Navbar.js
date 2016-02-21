@@ -16,8 +16,6 @@ class Navbar extends React.Component {
   };
 
   render() {
-    console.log(this.props, this.props.path);
-
     return (
       <nav style={styles.navbar}>
         <div className="is-pulled-left">
@@ -39,7 +37,7 @@ class Navbar extends React.Component {
             </a>
           </p>
 
-          <p className="is-inline">
+          <p className="is-inline is-unselectable">
             { this.props.path === '' ? ' New File' : this.props.path }
           </p>
         </div>

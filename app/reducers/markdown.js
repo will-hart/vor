@@ -17,10 +17,10 @@ const markdown = (state = initialState, action) => {
       return Object.assign({}, initialState);
 
     case OPEN_MD_FILE:
-      return Object.assign({}, state, { path: action.path });
+      return Object.assign({}, state, { path: action.path, text: action.text, dirty: false });
 
     case SAVE_MD_FILE:
-      return state;
+      return Object.assign({}, state, { dirty: false, path: action.path });
 
     case UPDATE_TEXT:
       return Object.assign({}, state, { text: action.text, dirty: true });

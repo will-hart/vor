@@ -8,7 +8,8 @@ import DevTools from '../containers/DevTools';
 
 const router = syncHistory(hashHistory);
 const enhancer = compose(
-  applyMiddleware(thunk, router),
+  applyMiddleware(thunk,
+    router),
   DevTools.instrument(),
   persistState(
     window.location.href.match(
