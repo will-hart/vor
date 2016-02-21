@@ -31,7 +31,7 @@ class DumbHomePage extends Component {
 
     return (
       <div>
-        <Navbar words={words} path={document.path}
+        <Navbar words={words} path={document.path} dirty={document.dirty}
           onCreate={this.props.create}
           onSave={this.props.save}
           onOpen={this.props.open}

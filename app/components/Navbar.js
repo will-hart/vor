@@ -11,6 +11,8 @@ class Navbar extends React.Component {
   static propTypes = {
     path: React.PropTypes.string.isRequired,
     words: React.PropTypes.number.isRequired,
+    dirty: React.PropTypes.bool.isRequired,
+
     onCreate: React.PropTypes.func.isRequired,
     onOpen: React.PropTypes.func.isRequired,
     onSave: React.PropTypes.func.isRequired
@@ -55,6 +57,7 @@ class Navbar extends React.Component {
               {path.sep}
             </span>
             <strong>{fileName}</strong>
+            {this.props.dirty ? '*' : ''}
           </p>
         </div>
 
