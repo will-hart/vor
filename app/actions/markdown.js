@@ -1,6 +1,7 @@
 import {
   askQuestion,
   getFilePath,
+  getLastModDate,
   getSaveFilePath,
   loadFile,
   saveFile
@@ -21,11 +22,13 @@ export function update(text) {
 const _doOpen = filePath => {
   return dispatch => {
     const md = loadFile(filePath);
+    const modDate = getLastModDate(filePath);
 
     dispatch({
       type: OPEN_MD_FILE,
       text: md,
-      path: filePath
+      path: filePath,
+      lastModDate: modDate
     });
   };
 };
@@ -55,11 +58,13 @@ export function open() {
 const _doSave = (text, filePath) => {
   return dispatch => {
     saveFile(text, filePath);
+    const modDate = getLastModDate(filePath);
 
     dispatch({
       type: SAVE_MD_FILE,
       text,
-      path: filePath
+      path: filePath,
+      lastModDate: modDate
     });
   };
 };

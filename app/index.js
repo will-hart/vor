@@ -6,18 +6,9 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.css';
 
-import { dataPath, loadFile } from './utils/fileOperations';
+import { dataPath, loadInitialState, loadFile } from './utils/fileOperations';
 
-let initialState = null;
-console.log(typeof(loadFile(dataPath)));
-try {
-  initialState = JSON.parse(loadFile(dataPath));
-  console.log('Loaded initial state:', initialState);
-} catch (e) {
-  console.warn('Error loading initial state from cache', e);
-}
-
-console.log(initialState)
+const initialState = loadInitialState();
 const store = initialState === null ? configureStore() : configureStore(initialState);
 
 render(
