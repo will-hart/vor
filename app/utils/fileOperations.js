@@ -1,8 +1,10 @@
 import fs from 'fs';
+import path from 'path';
 
-import remote from 'remote';
+import { remote } from 'electron';
 const dialog = remote.require('dialog');
 
+export const dataPath = path.join(remote.app.getPath('userData'), 'cache.txt');
 
 export const getFilePath = (callback) => {
   dialog.showOpenDialog({

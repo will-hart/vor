@@ -6,10 +6,11 @@ import { syncHistory } from 'react-router-redux';
 import rootReducer from '../reducers';
 import DevTools from '../containers/DevTools';
 
+import fileCacheMiddleware from '../middleware/fileCacheMiddleware';
+
 const router = syncHistory(hashHistory);
 const enhancer = compose(
-  applyMiddleware(thunk,
-    router),
+  applyMiddleware(thunk, router, fileCacheMiddleware),
   DevTools.instrument(),
   persistState(
     window.location.href.match(

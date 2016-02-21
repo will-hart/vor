@@ -2,48 +2,54 @@
 'use strict';
 
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 const baseConfig = require('./webpack.config.base');
 
-
 const config = Object.create(baseConfig);
 
-config.devtool = 'source-map';
+config.debug = true;
 
-config.entry = './app/index';
+config.devtool = 'cheap-module-eval-source-map';
 
-config.output.publicPath = '../dist/';
+config.entry = [
+  'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
+  './app/index'
+];
 
-config.module.loaders.push({
-  test: /^((?!\.module).)*\.css$/,
-  loader: ExtractTextPlugin.extract(
-    'style-loader',
-    'css-loader'
-  )
-}, {
-  test: /\.module\.css$/,
-  loader: ExtractTextPlugin.extract(
-    'style-loader',
-    'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-  )
-});
+config.output.publicPath = 'http://localhost:3000/dist/';
+
+config.module.loaders.push(
+  {
+    test: /\.css$/,
+    loaders: ['style-loader', 'css-loader']
+  }, {
+    test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=application/font-woff'
+  }, {
+    test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=application/font-woff'
+  }, {
+    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=application/octet-stream'
+  }, {
+    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'file'
+  }, {
+    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=image/svg+xml'
+  }
+);
+
 
 config.plugins.push(
-  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoErrorsPlugin(),
   new webpack.DefinePlugin({
-    '__DEV__': false,
+    '__DEV__': true,
     'process.env': {
-      'NODE_ENV': JSON.stringify('production')
+      'NODE_ENV': JSON.stringify('development')
     }
-  }),
-  new webpack.optimize.UglifyJsPlugin({
-    compressor: {
-      screw_ie8: true,
-      warnings: false
-    }
-  }),
-  new ExtractTextPlugin('style.css', { allChunks: true })
+  })
 );
 
 config.target = webpackTargetElectronRenderer(config);
