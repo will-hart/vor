@@ -50,9 +50,13 @@ html, body {
 }
 
 .window-button:hover {
-  background: #8BC34A;
+  background: #607D8B;
 }
 
 .window-close-button:hover {
   background: #AA2222;
+}
+
+.window-help-button:hover {
+  background: #448AFF;
 }

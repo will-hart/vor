@@ -9,7 +9,7 @@ const BrowserWindow = remote.require('browser-window');
 
 const styles = {
   wrapper: {
-    background: '#689F38',
+    background: '#455A64',
     zIndex: 5,
     width: '100%',
     height: '40px',
@@ -27,7 +27,7 @@ const styles = {
     verticalAlign: 'middle'
   },
   wordCount: {
-    background: '#8BC34A',
+    background: '#607D8B',
     display: 'inline-block',
     height: '100%',
     paddingLeft: '1em',
@@ -70,6 +70,10 @@ class Titlebar extends React.Component {
     BrowserWindow.getFocusedWindow().close();
   }
 
+  _showHelp() {
+    console.log('Show help');
+  }
+
   render() {
     const filePath = this.props.path;
     let fileDir;
@@ -86,11 +90,11 @@ class Titlebar extends React.Component {
       <div className="is-draggable" style={styles.wrapper}>
         <div className="is-inline is-unselectable">
           <Icon name="bars" className="is-not-draggable" style={styles.icon} onDoubleClick={this._close} />
-          <span style={{ color: '#EEE', paddingLeft: '1em' }}>
+          <span style={{ color: '#999', paddingLeft: '1em' }}>
             {fileDir}
             {fileDir === 'New Document' ? '' : path.sep}
           </span>
-          <strong>{fileName}</strong>
+          <strong style={{ color: '#FFF' }}>{fileName}</strong>
           {fileDir !== 'New Document' && this.props.dirty ? '*' : ''}
         </div>
 
@@ -100,6 +104,9 @@ class Titlebar extends React.Component {
           </span>
 
           <span className="is-not-draggable" style={styles.buttonGroup}>
+            <span style={styles.windowButton} className="window-help-button">
+              <Icon style={styles.icon} name="question" onClick={this._showHelp} />
+            </span>
             <span style={styles.windowButton} className="window-button">
               <Icon style={styles.icon} name="angle-double-down" onClick={this._minimise} />
             </span>
