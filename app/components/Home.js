@@ -48,12 +48,10 @@ export default class Home extends Component {
 
   componentDidMount() {
     const pm = this.refs.editor.pm;
-    // pm.removeKeymap(this.editorKeymap);
     pm.addKeymap(this.editorKeymap);
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log("new props", nextProps, this.state);
     if (nextProps.text !== this.state.markdown) {
       this.setState({
         markdown: nextProps.text
