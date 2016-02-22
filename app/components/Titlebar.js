@@ -14,7 +14,7 @@ const styles = {
     width: '100%',
     height: '40px',
     color: 'white',
-    paddingLeft: '0.4em',
+    paddingLeft: '0.8em',
 
     display: 'flex',
     flexDirection: 'row',
@@ -85,7 +85,7 @@ class Titlebar extends React.Component {
     return (
       <div className="is-draggable" style={styles.wrapper}>
         <div className="is-inline is-unselectable">
-          <Icon name="bars" style={styles.icon} />
+          <Icon name="bars" className="is-not-draggable" style={styles.icon} onDoubleClick={this._close} />
           <span style={{ color: '#EEE', paddingLeft: '1em' }}>
             {fileDir}
             {fileDir === 'New Document' ? '' : path.sep}
