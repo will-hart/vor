@@ -20,9 +20,6 @@ config.output.publicPath = 'http://localhost:3000/dist/';
 
 config.module.loaders.push(
   {
-    test: /\.css$/,
-    loaders: ['style-loader', 'css-loader']
-  }, {
     test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
     loader: 'url?limit=10000&mimetype=application/font-woff'
   }, {
@@ -39,7 +36,6 @@ config.module.loaders.push(
     loader: 'url?limit=10000&mimetype=image/svg+xml'
   }
 );
-
 
 config.plugins.push(
   new webpack.HotModuleReplacementPlugin(),
