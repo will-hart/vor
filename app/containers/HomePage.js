@@ -39,6 +39,9 @@ class DumbHomePage extends Component {
 
         <Home text={text}
           onUpdate={this.props.update}
+          onCreate={this.props.create}
+          onSave={this.props.save}
+          onOpen={this.props.open}
         />
       </div>
     );

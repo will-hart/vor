@@ -8,12 +8,18 @@ import 'prosemirror/dist/menu/menubar';
 import 'prosemirror/dist/markdown';
 import debounce from 'lodash.debounce';
 
+import Keymap from 'browserkeymap';
+
 require('bulma/css/bulma.css');
 
 export default class Home extends Component {
   static propTypes = {
     text: React.PropTypes.string.isRequired,
-    onUpdate: React.PropTypes.func.isRequired
+    onUpdate: React.PropTypes.func.isRequired,
+
+    onCreate: React.PropTypes.func.isRequired,
+    onSave: React.PropTypes.func.isRequired,
+    onOpen: React.PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -32,6 +38,12 @@ export default class Home extends Component {
     this._onChange = this._onChange.bind(this);
 
     this.performUpdate = debounce(this.props.onUpdate, 300);
+
+    this.editorKeymap = new Keymap({
+      'Ctrl-S': this.props.onSave,
+      'Ctrl-N': this.props.onCreate,
+      'Ctrl-O': this.props.onOpen
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,6 +53,12 @@ export default class Home extends Component {
         markdown: nextProps.text
       });
     }
+  }
+
+  componentWillUpdate(nextProps) {
+    const pm = this.refs.editor.pm;
+    pm.removeKeymap(this.editorKeymap);
+    pm.addKeymap(this.editorKeymap);
   }
 
   _onChange(newValue) {
@@ -59,7 +77,7 @@ export default class Home extends Component {
             value={markdown}
             onChange={this._onChange}
             options={options}
-            ref="pm"
+            ref="editor"
           />
         </div>
       </div>
