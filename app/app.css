@@ -44,3 +44,15 @@ html, body {
 .is-draggable {
   -webkit-app-region: drag
 }
+
+.is-not-draggable {
+  -webkit-app-region: no-drag;
+}
+
+.window-button:hover {
+  background: #8BC34A;
+}
+
+.window-close-button:hover {
+  background: #AA2222;
+}
