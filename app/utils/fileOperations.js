@@ -60,8 +60,13 @@ export const loadFile = (filePath, errorValue = undefined) => {
 };
 
 export const getLastModDate = (filePath) => {
-  return fs.statSync(filePath).mtime;
-}
+  try {
+    return fs.statSync(filePath).mtime;
+  } catch (e) {
+    console.warn(e);
+    return null;
+  }
+};
 
 export const loadInitialState = () => {
   // load cache from file
@@ -79,8 +84,17 @@ export const loadInitialState = () => {
     return cachedState;
   }
 
-  // check that the file wasn't modified
   const lastModded = getLastModDate(cachedState.markdown.path);
+
+  // check the file still exists
+  if (lastModded === null) {
+    alert('It looks like the file you had open when you last closed the editor has been renamed or deleted. Please re-save the file to avoid losing your changes.');
+    cachedState.markdown.path = '';
+    cachedState.markdown.dirty = true;
+    return cachedState;
+  }
+
+  // check that the file wasn't modified
   if (Math.floor(lastModded.getTime() / 1000) !==
     Math.floor(new Date(cachedState.markdown.lastMod).getTime() / 1000)) {
 
@@ -92,4 +106,4 @@ export const loadInitialState = () => {
   }
 
   return cachedState;
-}
+};
