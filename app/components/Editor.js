@@ -12,7 +12,7 @@ import Keymap from 'browserkeymap';
 
 require('bulma/css/bulma.css');
 
-export default class Home extends Component {
+export default class Editor extends Component {
   static propTypes = {
     text: React.PropTypes.string.isRequired,
     onUpdate: React.PropTypes.func.isRequired,

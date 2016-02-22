@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { open, save, update, create } from '../actions/markdown';
 
 import Titlebar from '../components/Titlebar';
-import Home from '../components/Home';
+import Editor from '../components/Editor';
 
 class DumbHomePage extends Component {
   static propTypes = {
@@ -33,7 +33,7 @@ class DumbHomePage extends Component {
       <div>
         <Titlebar words={words} path={document.path} dirty={document.dirty} />
 
-        <Home text={text}
+        <Editor text={text}
           onUpdate={this.props.update}
           onCreate={this.props.create}
           onSave={this.props.save}
