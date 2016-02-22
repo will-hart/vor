@@ -57,7 +57,13 @@ class Titlebar extends React.Component {
   }
 
   _maximise() {
-    BrowserWindow.getFocusedWindow().maximize();
+    const win = BrowserWindow.getFocusedWindow();
+
+    if (win.isMaximized()) {
+      win.unmaximize();
+    } else {
+      win.maximize();
+    }
   }
 
   _close() {
@@ -95,7 +101,7 @@ class Titlebar extends React.Component {
 
           <span className="is-not-draggable" style={styles.buttonGroup}>
             <span style={styles.windowButton} className="window-button">
-              <Icon style={styles.icon} name="bars" onClick={this._minimise} />
+              <Icon style={styles.icon} name="angle-double-down" onClick={this._minimise} />
             </span>
             <span style={styles.windowButton} className="window-button">
               <Icon style={styles.icon} name="clone" onClick={this._maximise} />
