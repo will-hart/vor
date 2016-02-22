@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { open, save, update, create } from '../actions/markdown';
 
-import Navbar from '../components/Navbar';
+import Titlebar from '../components/Titlebar';
 import Home from '../components/Home';
 
 class DumbHomePage extends Component {
@@ -31,11 +31,7 @@ class DumbHomePage extends Component {
 
     return (
       <div>
-        <Navbar words={words} path={document.path} dirty={document.dirty}
-          onCreate={this.props.create}
-          onSave={this.props.save}
-          onOpen={this.props.open}
-        />
+        <Titlebar words={words} path={document.path} dirty={document.dirty} />
 
         <Home text={text}
           onUpdate={this.props.update}

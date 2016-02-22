@@ -20,7 +20,7 @@ html, body {
   z-index: 1;
 
   position: absolute;
-  top: 0;
+  top: 8px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -28,7 +28,6 @@ html, body {
 }
 
 .ProseMirror-content {
-  padding-top: 30px;
   overflow-y: auto;
 
   width: 60%;
@@ -40,4 +39,8 @@ html, body {
 
 .ProseMirror ul, .ProseMirror ol {
   padding-left: 1em;
+}
+
+.is-draggable {
+  -webkit-app-region: drag
 }
