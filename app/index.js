@@ -26,8 +26,13 @@ render(
 
 require('web-frame').setSpellCheckProvider('en-GB', true, {
   spellCheck: function check(word) {
-    console.log(spellchecker.getCorrectionsForMisspelling(word));
-    return !(spellchecker.isMisspelled(word));
+    const isMisspelled = spellchecker.isMisspelled(word);
+
+    // if (isMisspelled) {
+    //   console.log(spellchecker.getCorrectionsForMisspelling(word));
+    // }
+
+    return !(isMisspelled);
   }
 });
 
