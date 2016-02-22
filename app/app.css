@@ -60,3 +60,17 @@ html, body {
 .window-help-button:hover {
   background: #448AFF;
 }
+
+.word-count {
+  transition: background 1s;
+  background: #607D8B;
+  display: inline-block;
+  height: 100%;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-right: 1em;
+}
+
+.word-count.dirty {
+  background: #AA2222;
+}

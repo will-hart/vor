@@ -6,6 +6,8 @@ import Icon from 'react-fa';
 import remote from 'remote';
 const BrowserWindow = remote.require('browser-window');
 
+import Helpbar from './Helpbar';
+
 
 const styles = {
   wrapper: {
@@ -26,14 +28,6 @@ const styles = {
     fontSize: '1em',
     verticalAlign: 'middle'
   },
-  wordCount: {
-    background: '#607D8B',
-    display: 'inline-block',
-    height: '100%',
-    paddingLeft: '1em',
-    paddingRight: '1em',
-    marginRight: '1em'
-  },
   buttonGroup: {
     marginRight: '0.5em'
   },
@@ -51,6 +45,16 @@ class Titlebar extends React.Component {
     dirty: React.PropTypes.bool.isRequired,
     words: React.PropTypes.number.isRequired
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      helpVisible: false
+    };
+
+    this._showHelp = this._showHelp.bind(this);
+  }
 
   _minimise() {
     BrowserWindow.getFocusedWindow().minimize();
@@ -71,7 +75,9 @@ class Titlebar extends React.Component {
   }
 
   _showHelp() {
-    console.log('Show help');
+    this.setState({
+      helpVisible: !this.state.helpVisible
+    });
   }
 
   render() {
@@ -86,37 +92,42 @@ class Titlebar extends React.Component {
       fileDir = 'New Document';
     }
 
+    const wordCountClass = 'word-count' + (this.props.dirty ? ' dirty' : '');
+
     return (
-      <div className="is-draggable" style={styles.wrapper}>
-        <div className="is-inline is-unselectable">
-          <Icon name="bars" className="is-not-draggable" style={styles.icon} onDoubleClick={this._close} />
-          <span style={{ color: '#999', paddingLeft: '1em' }}>
-            {fileDir}
-            {fileDir === 'New Document' ? '' : path.sep}
-          </span>
-          <strong style={{ color: '#FFF' }}>{fileName}</strong>
-          {fileDir !== 'New Document' && this.props.dirty ? '*' : ''}
-        </div>
+      <div>
+        {this.state.helpVisible === true ? <Helpbar /> : ''}
+        <div className="is-draggable" style={styles.wrapper}>
+          <div className="is-inline is-unselectable">
+            <Icon name="bars" className="is-not-draggable" style={styles.icon} onDoubleClick={this._close} />
+            <span style={{ color: '#999', paddingLeft: '1em' }}>
+              {fileDir}
+              {fileDir === 'New Document' ? '' : path.sep}
+            </span>
+            <strong style={{ color: '#FFF' }}>{fileName}</strong>
+            {fileDir !== 'New Document' && this.props.dirty ? '*' : ''}
+          </div>
 
-        <div className="is-inline is-unselectable">
-          <span style={styles.wordCount}>
-            { this.props.words ? this.props.words + ' words' : '0 words '}
-          </span>
+          <div className="is-inline is-unselectable">
+            <span className={wordCountClass}>
+              { this.props.words ? this.props.words + ' words' : '0 words '}
+            </span>
 
-          <span className="is-not-draggable" style={styles.buttonGroup}>
-            <span style={styles.windowButton} className="window-help-button">
-              <Icon style={styles.icon} name="question" onClick={this._showHelp} />
+            <span className="is-not-draggable" style={styles.buttonGroup}>
+              <span style={styles.windowButton} className="window-help-button">
+                <Icon style={styles.icon} name="question" onClick={this._showHelp} />
+              </span>
+              <span style={styles.windowButton} className="window-button">
+                <Icon style={styles.icon} name="angle-double-down" onClick={this._minimise} />
+              </span>
+              <span style={styles.windowButton} className="window-button">
+                <Icon style={styles.icon} name="clone" onClick={this._maximise} />
+              </span>
+              <span style={styles.windowButton} className="window-close-button">
+                <Icon style={styles.icon} name="close" onClick={this._close} />
+              </span>
             </span>
-            <span style={styles.windowButton} className="window-button">
-              <Icon style={styles.icon} name="angle-double-down" onClick={this._minimise} />
-            </span>
-            <span style={styles.windowButton} className="window-button">
-              <Icon style={styles.icon} name="clone" onClick={this._maximise} />
-            </span>
-            <span style={styles.windowButton} className="window-close-button">
-              <Icon style={styles.icon} name="close" onClick={this._close} />
-            </span>
-          </span>
+          </div>
         </div>
       </div>
     );
