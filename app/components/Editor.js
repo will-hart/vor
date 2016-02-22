@@ -36,11 +36,14 @@ export default class Editor extends Component {
     };
 
     this._onChange = this._onChange.bind(this);
+    this._delayedSave = this._delayedSave.bind(this);
 
-    this.performUpdate = debounce(this.props.onUpdate, 300);
+    this.performUpdate = debounce((text) => {
+      this.props.onUpdate(text);
+    }, 300);
 
     this.editorKeymap = new Keymap({
-      'Ctrl-S': this.props.onSave,
+      'Ctrl-S': this._delayedSave,
       'Ctrl-N': this.props.onCreate,
       'Ctrl-O': this.props.onOpen
     });
@@ -57,6 +60,11 @@ export default class Editor extends Component {
         markdown: nextProps.text
       });
     }
+  }
+
+  _delayedSave() {
+    // delayed so that hopefully the debounced performUpdate function will have been called
+    setTimeout(this.props.onSave, 500);
   }
 
   _onChange(newValue) {
