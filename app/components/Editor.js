@@ -6,11 +6,15 @@ import 'prosemirror/dist/menu/icons';
 import 'prosemirror/dist/menu/menu';
 import 'prosemirror/dist/menu/menubar';
 import 'prosemirror/dist/markdown';
+
+import schema from '../editor/Schema';
+
 import debounce from 'lodash.debounce';
 
 import Keymap from 'browserkeymap';
 
 require('bulma/css/bulma.css');
+require('../assets/css/katex.min.css');
 
 export default class Editor extends Component {
   static propTypes = {
@@ -31,7 +35,8 @@ export default class Editor extends Component {
         docFormat: 'markdown',
         autoInput: true,
         tooltipMenu: { selectedBlockMenu: true },
-        menuBar: { float: true }
+        menuBar: { float: true },
+        schema
       }
     };
 
