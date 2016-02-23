@@ -1,8 +1,7 @@
 import { render as katex } from 'katex';
 import { Inline, Attribute } from 'prosemirror/dist/model';
 import { elt } from 'prosemirror/dist/dom';
-
-const mdMathsPlugin = require('markdown-it-simplemath');
+import { toText } from 'prosemirror/dist/format';
 
 const mathsRenderer = maths => {
   const node = elt('span', {
@@ -20,8 +19,13 @@ class MathsInline extends Inline {
       maths: new Attribute
     };
   }
+
   get contains() {
     return null;
+  }
+
+  get draggable() {
+    return false;
   }
 }
 
@@ -56,7 +60,7 @@ MathsInline.register('parseMarkdown', 'math_inline', {
 
 // install the maths plugin
 MathsInline.register('configureMarkdown', 'math_inline', parser => {
-  return parser.use(mdMathsPlugin, { inlineRenderer: mathsRenderer });
+  return parser.use(require('markdown-it-simplemath'), { inlineRenderer: mathsRenderer });
 });
 
 MathsInline.register('command', 'insert', {
@@ -64,10 +68,11 @@ MathsInline.register('command', 'insert', {
     params: [
       {
         label: 'Maths',
+        type: 'text',
         attr: 'maths',
-        prefill: function prefillMenu() {
-          console.log('Prefilling Inline Maths');
-          return 'asdf'; //selectedNodeAttr(pm, this, "alt") || toText(pm.doc.sliceBetween(pm.selection.from, pm.selection.to))
+        prefill: function prefillMenu(pm) {
+          console.log('Prefilling Inline Maths', pm);
+          return this.attrs.maths;
         }
       }
     ]
@@ -83,9 +88,9 @@ MathsInline.register('command', 'insert', {
   }
 });
 
-MathsInline.prototype.handleClick = pm => {
-  console.log('Handling click for inline maths');
+MathsInline.prototype.handleClick = (pm) => {
   const command = pm.commands['mathsinline:insert'];
+  console.log('Handling click on inline maths');
   if (command) {
     command.exec(pm);
   }
