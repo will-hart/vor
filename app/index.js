@@ -6,7 +6,13 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.css';
 
-const store = configureStore();
+// require('spellchecker/build/Release/spellchecker.node');
+import spellchecker from 'spellchecker';
+
+import { loadInitialState } from './utils/fileOperations';
+
+const initialState = loadInitialState();
+const store = initialState === null ? configureStore() : configureStore(initialState);
 
 render(
   <Provider store={store}>
@@ -16,6 +22,19 @@ render(
   </Provider>,
   document.getElementById('root')
 );
+
+
+require('web-frame').setSpellCheckProvider('en-GB', true, {
+  spellCheck: function check(word) {
+    const isMisspelled = spellchecker.isMisspelled(word);
+
+    // if (isMisspelled) {
+    //   console.log(spellchecker.getCorrectionsForMisspelling(word));
+    // }
+
+    return !(isMisspelled);
+  }
+});
 
 if (process.env.NODE_ENV !== 'production') {
   // Use require because imports can't be conditional.
