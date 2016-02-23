@@ -15,10 +15,6 @@ const styles = {
 };
 
 class Helpbar extends React.Component {
-  static propTypes = {
-    onClose: React.PropTypes.func.isRequired
-  }
-
   render() {
     return (
       <div style={styles.helpbarWrapper}>
@@ -32,6 +28,13 @@ class Helpbar extends React.Component {
           <li><strong>Ctrl+N</strong> - create a file</li>
           <li><strong>Ctrl+O</strong> - open a file</li>
           <li><strong>Ctrl+S</strong> - save the current file</li>
+        </ul>
+
+        <p>You can also do standard word processing shortcuts such as</p>
+
+        <ul style={{ padding: '1em' }}>
+          <li><strong>Ctrl+B</strong> - bold formatting</li>
+          <li><strong>Ctrl+I</strong> - italic formatting</li>
         </ul>
 
         <p>
