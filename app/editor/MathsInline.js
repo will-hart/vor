@@ -1,7 +1,6 @@
 import { render as katex } from 'katex';
 import { Inline, Attribute } from 'prosemirror/dist/model';
 import { elt } from 'prosemirror/dist/dom';
-import { toText } from 'prosemirror/dist/format';
 
 const mathsRenderer = maths => {
   const node = elt('span', {
@@ -19,14 +18,10 @@ class MathsInline extends Inline {
       maths: new Attribute
     };
   }
-
-  get contains() {
-    return null;
-  }
-
-  get draggable() {
-    return false;
-  }
+  get contains() { return null; }
+  get draggable() { return false; }
+  get kind() { console.warn('Use NodeKind here on upgrade to 0.4.0'); return 'inline'; }
+  set kind(k) { console.warn('Ignored seting MathsInline Node Kind to', k); }
 }
 
 MathsInline.register('parseDOM', 'span', {
@@ -67,23 +62,25 @@ MathsInline.register('command', 'insert', {
   derive: {
     params: [
       {
+        attr: 'maths',
         label: 'Maths',
         type: 'text',
-        attr: 'maths',
-        prefill: function prefillMenu(pm) {
-          console.log('Prefilling Inline Maths', pm);
-          return this.attrs.maths;
+        prefill: function doPrefill(pm) {
+          const { node } = pm.selection;
+          if (node && node.type === this) {
+            return node.attrs.maths;
+          }
         }
       }
     ]
   },
-  label: 'Insert Inline Maths',
+  label: 'Maths - Inline',
   menu: {
     group: 'insert',
-    rank: 20,
+    rank: 70,
     display: {
       type: 'label',
-      label: 'Image'
+      label: 'Maths - Inline'
     }
   }
 });
@@ -91,6 +88,7 @@ MathsInline.register('command', 'insert', {
 MathsInline.prototype.handleClick = (pm) => {
   const command = pm.commands['mathsinline:insert'];
   console.log('Handling click on inline maths');
+  console.log(pm.commands['mathsinline:insert'].self.kind);
   if (command) {
     command.exec(pm);
   }
