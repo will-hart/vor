@@ -2,6 +2,8 @@ import { render as katex } from 'katex';
 import { Inline, Attribute } from 'prosemirror/dist/model';
 import { elt } from 'prosemirror/dist/dom';
 
+import GenericParser from './GenericParser';
+
 // curried renderer
 const mathsRenderer = (maths) => {
   const node = elt('span', {
@@ -56,10 +58,11 @@ MathsInline.register('parseMarkdown', 'math_inline', {
 
 // install the maths plugin
 MathsInline.register('configureMarkdown', 'math_inline', parser => {
-  return parser.use(require('markdown-it-simplemath'), {
+  return parser.use(GenericParser, {
     inlineRenderer: mathsRenderer,
     inlineOpen: '$$',
-    inlineClose: '$$'
+    inlineClose: '$$',
+    tokenName: 'math_inline'
   });
 });
 
