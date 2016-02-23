@@ -11,6 +11,7 @@ import debounce from 'lodash.debounce';
 import Keymap from 'browserkeymap';
 
 require('bulma/css/bulma.css');
+require('../assets/css/katex.min.css');
 
 export default class Editor extends Component {
   static propTypes = {

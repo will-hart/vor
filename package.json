@@ -95,6 +95,7 @@
     "bulma": "0.0.14",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
+    "katex": "^0.5.1",
     "lodash.debounce": "^4.0.3",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
