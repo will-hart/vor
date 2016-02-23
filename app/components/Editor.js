@@ -6,6 +6,9 @@ import 'prosemirror/dist/menu/icons';
 import 'prosemirror/dist/menu/menu';
 import 'prosemirror/dist/menu/menubar';
 import 'prosemirror/dist/markdown';
+
+import schema from '../editor/Schema';
+
 import debounce from 'lodash.debounce';
 
 import Keymap from 'browserkeymap';
@@ -32,7 +35,8 @@ export default class Editor extends Component {
         docFormat: 'markdown',
         autoInput: true,
         tooltipMenu: { selectedBlockMenu: true },
-        menuBar: { float: true }
+        menuBar: { float: true },
+        schema
       }
     };
 

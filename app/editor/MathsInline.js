@@ -2,6 +2,18 @@ import { render as katex } from 'katex';
 import { Inline, Attribute } from 'prosemirror/dist/model';
 import { elt } from 'prosemirror/dist/dom';
 
+const mdMathsPlugin = require('markdown-it-simplemath');
+
+const mathsRenderer = maths => {
+  const node = elt('span', {
+    class: 'pm-maths-inline'
+  }, ' \\(' + maths + '\\) ');
+
+  katex(maths, node);
+  return node;
+};
+
+
 class MathsInline extends Inline {
   get attrs() {
     return {
@@ -25,49 +37,54 @@ MathsInline.register('parseDOM', 'span', {
 });
 
 MathsInline.prototype.serializeDOM = node => {
-  if (node.rendered) {
-    node.rendered = node.rendered.cloneNode(true);
-  } else {
-    node.rendered = elt('span', {
-      class: 'pm-maths-inline'
-    }, ' \\(' + node.attrs.maths + '\\) ');
-
-    console.log(node.rendered);
-    katex(node.attrs.maths, node.rendered);
-  }
-
+  node.rendered = mathsRenderer(node.attrs.maths);
   return node.rendered;
 };
+
+MathsInline.prototype.serializeMarkdown = (ser, node) => {
+  const md = '$' + node.attrs.maths + '$';
+  ser.text(md, false);
+};
+
+MathsInline.register('parseMarkdown', 'math_inline', {
+  parse: function parse(state, tok) {
+    state.addNode(this, {
+      maths: tok.content
+    });
+  }
+});
+
+// install the maths plugin
+MathsInline.register('configureMarkdown', 'math_inline', parser => {
+  return parser.use(mdMathsPlugin, { inlineRenderer: mathsRenderer });
+});
 
 MathsInline.register('command', 'insert', {
   derive: {
     params: [
       {
-        name: 'LaTeX Maths',
+        label: 'Maths',
         attr: 'maths',
-        label: 'LaTeX Maths',
-        type: 'text',
-        prefill: (pm) => {
-          const { node } = pm.selection;
-          if (node && node.type === MathsInline) {
-            return node.attrs.maths;
-          }
+        prefill: function prefillMenu() {
+          console.log('Prefilling Inline Maths');
+          return 'asdf'; //selectedNodeAttr(pm, this, "alt") || toText(pm.doc.sliceBetween(pm.selection.from, pm.selection.to))
         }
       }
     ]
   },
-  label: 'Maths - Inline',
+  label: 'Insert Inline Maths',
   menu: {
     group: 'insert',
-    rank: '20',
+    rank: 20,
     display: {
       type: 'label',
-      label: 'Maths - Inline'
+      label: 'Image'
     }
   }
 });
 
-MathsInline.protoype.handleClick = pm => {
+MathsInline.prototype.handleClick = pm => {
+  console.log('Handling click for inline maths');
   const command = pm.commands['mathsinline:insert'];
   if (command) {
     command.exec(pm);
