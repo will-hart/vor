@@ -97,7 +97,7 @@
     "font-awesome": "^4.4.0",
     "katex": "^0.5.1",
     "lodash.debounce": "^4.0.3",
-    "markdown-it-simplemath": "^1.0.0",
+    "markdown-it-simplemath": "git+https://github.com/will-hart/markdown-it-simplemath.git#custom_delimeters",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-fa": "^4.0.0",

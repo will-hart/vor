@@ -2,12 +2,13 @@ import { render as katex } from 'katex';
 import { Inline, Attribute } from 'prosemirror/dist/model';
 import { elt } from 'prosemirror/dist/dom';
 
-const mathsRenderer = maths => {
+// curried renderer
+const mathsRenderer = (maths) => {
   const node = elt('span', {
     class: 'pm-maths-inline'
   }, ' \\(' + maths + '\\) ');
 
-  katex(maths, node);
+  katex(maths, node, { displayMode: false });
   return node;
 };
 
@@ -41,7 +42,7 @@ MathsInline.prototype.serializeDOM = node => {
 };
 
 MathsInline.prototype.serializeMarkdown = (ser, node) => {
-  const md = '$' + node.attrs.maths + '$';
+  const md = '$$' + node.attrs.maths + '$$';
   ser.text(md, false);
 };
 
@@ -55,7 +56,11 @@ MathsInline.register('parseMarkdown', 'math_inline', {
 
 // install the maths plugin
 MathsInline.register('configureMarkdown', 'math_inline', parser => {
-  return parser.use(require('markdown-it-simplemath'), { inlineRenderer: mathsRenderer });
+  return parser.use(require('markdown-it-simplemath'), {
+    inlineRenderer: mathsRenderer,
+    inlineOpen: '$$',
+    inlineClose: '$$'
+  });
 });
 
 MathsInline.register('command', 'insert', {
@@ -64,13 +69,7 @@ MathsInline.register('command', 'insert', {
       {
         attr: 'maths',
         label: 'Maths',
-        type: 'text',
-        prefill: function doPrefill(pm) {
-          const { node } = pm.selection;
-          if (node && node.type === this) {
-            return node.attrs.maths;
-          }
-        }
+        type: 'text'
       }
     ]
   },
@@ -84,16 +83,5 @@ MathsInline.register('command', 'insert', {
     }
   }
 });
-
-MathsInline.prototype.handleClick = (pm) => {
-  const command = pm.commands['mathsinline:insert'];
-  console.log('Handling click on inline maths');
-  console.log(pm.commands['mathsinline:insert'].self.kind);
-  if (command) {
-    command.exec(pm);
-  }
-
-  return command !== null;
-};
 
 export default MathsInline;
