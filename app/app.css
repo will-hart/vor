@@ -53,6 +53,10 @@ html, body {
   color: white;
 }
 
+.ProseMirror-invalid {
+  background: #AA2222;
+}
+
 .ProseMirror-icon:hover, .ProseMirror-menu-dropdown-item:hover {
   background: #455A64;
 }
