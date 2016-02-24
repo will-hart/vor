@@ -14,13 +14,11 @@ class CitationManager {
     }
   }
 
-  static getCitation(key) {
-    console.log('Getting citation for key', key);
-
+  static getCitationData(key) {
     const { entries } = citations;
 
     if (!entries) {
-      return `## Unknown citation: ${key}`;
+      return null;
     }
 
     const item = entries.find((e) => {
@@ -28,10 +26,20 @@ class CitationManager {
     });
 
     if (!item) {
-      return `UNKNOWN: ${key}`;
+      return null;
     }
 
-    return item.EntryKey;
+    return item;
+  }
+
+  static getCitation(key) {
+    const { EntryKey } = CitationManager.getCitationData(key) || {};
+
+    if (EntryKey) {
+      return '@' + EntryKey; // TODO use citeproc for actual citation?
+    }
+
+    return `## Unknown citation: ${key}`;
   }
 }
 
