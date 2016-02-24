@@ -2,14 +2,14 @@ import { Inline, Attribute } from 'prosemirror/dist/model';
 import { elt } from 'prosemirror/dist/dom';
 
 import CitationParser from './CitationParser';
+import CitationManager from '../utils/CitationManager';
 
 // curried renderer
 const citationRenderer = (source) => {
   return elt('span', {
     class: 'pm-citation'
-  }, '(' + source + ')');
+  }, '(' + CitationManager.getCitation(source) + ')');
 };
-
 
 class Citation extends Inline {
   get attrs() {
@@ -40,7 +40,6 @@ Citation.prototype.serializeDOM = node => {
 };
 
 Citation.prototype.serializeMarkdown = (ser, node) => {
-  console.log('serialising md', node.attrs.source);
   const md = '[@' + node.attrs.source + ']';
   ser.text(md, false);
 };
