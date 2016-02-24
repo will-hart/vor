@@ -80,6 +80,12 @@ html, body {
   padding-left: 1em;
 }
 
+.pm-citation {
+  background: #DDD;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
 .window-button:hover {
   background: #607D8B;
 }
