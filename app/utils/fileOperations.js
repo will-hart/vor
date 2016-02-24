@@ -8,22 +8,22 @@ export const basePath = remote.app.getPath('userData');
 export const dataPath = path.join(basePath, 'cache.json');
 export const settingsPath = path.join(basePath, 'vorSettings.json');
 
-export const getFilePath = (callback) => {
-  dialog.showOpenDialog({
-    filters: [
+export const getFilePath = (callback, filters = [
       { name: 'Markdown', extensions: ['md', 'markdown'] },
       { name: 'Text', extensions: ['txt'] }
-    ],
+]) => {
+  dialog.showOpenDialog({
+    filters,
     title: 'Open a document'
   }, callback);
 };
 
-export const getSaveFilePath = (callback) => {
-  dialog.showSaveDialog({
-    filters: [
+export const getSaveFilePath = (callback, filters = [
       { name: 'Markdown', extensions: ['md'] },
       { name: 'Text', extensions: ['txt'] }
-    ],
+]) => {
+  dialog.showSaveDialog({
+    filters,
     title: 'Save a document'
   }, callback);
 };
