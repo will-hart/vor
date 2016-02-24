@@ -128,7 +128,7 @@ class Titlebar extends React.Component {
     return (
       <div>
         {this.state.helpVisible === true ? <Helpbar /> : ''}
-        {this.state.settingsVisible === true ? <Settings onCancel={this._showSettings} onSave={this._saveSettings} /> : ''}
+        {this.state.settingsVisible === true ? <Settings onCancel={this._showSettings} onSave={this._saveSettings} settings={this.props.settings} /> : ''}
 
         <div className="is-draggable" style={styles.wrapper}>
           <div className="is-inline is-unselectable">

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Colours } from '../Constants';
 
+import { getFilePath } from '../utils/fileOperations';
+
 const styles = {
   wrapper: {
     position: 'fixed',
@@ -32,17 +34,17 @@ const styles = {
 class Settings extends React.Component {
   static propTypes = {
     onCancel: React.PropTypes.func.isRequired,
-    onSave: React.PropTypes.func.isRequired
+    onSave: React.PropTypes.func.isRequired,
+    settings: React.PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      bibtexPath: ''
-    };
+    this.state = Object.assign({}, { bibTextPath: '' }, this.props.settings);
 
     this._filePathChanged = this._filePathChanged.bind(this);
+    this._getFilePath = this._getFilePath.bind(this);
     this._doSave = this._doSave.bind(this);
   }
 
@@ -50,10 +52,17 @@ class Settings extends React.Component {
     this.props.onSave(this.state);
   }
 
-  _filePathChanged(e) {
+  _filePathChanged(p) {
     this.setState({
-      bibtexPath: e.target.value
+      bibtexPath: p
     });
+  }
+
+  _getFilePath() {
+    getFilePath(this._filePathChanged, [
+      { name: 'Bibtex', extensions: ['bib'] },
+      { name: 'Text', extensions: ['txt'] }
+    ]);
   }
 
   render() {
@@ -77,7 +86,10 @@ class Settings extends React.Component {
 
           <p className="control">
             <label className="label">BibTex file path</label>
-            <input className="input" type="file" placeholder="File Path" onChange={this._filePathChanged} value={this.state.bibtexPath} />
+          </p>
+          <p className="control is-grouped">
+            <input className="input" type="text" placeholder="File Path" onClick={this._getFilePath} disabled value={this.state.bibtexPath} />
+            <a className="button is-info" onClick={this._getFilePath}>Select</a>
           </p>
 
         </div>

@@ -7,10 +7,8 @@ import { UPDATE_SETTINGS } from '../actions/settings';
  */
 const fileWriterMiddleware = store => next => action => {
   if (action.type === UPDATE_SETTINGS) {
-    console.log('writing settings');
     writeSettings(store);
   } else {
-    console.log('writing md');
     writeCache(store);
   }
 
@@ -27,7 +25,6 @@ const writeCache = store => {
 const writeSettings = store => {
   Promise.resolve().then(() => {
     const { settings } = store.getState();
-    console.log('data is ', settings);
     saveFile(JSON.stringify(settings), settingsPath);
   });
 };
