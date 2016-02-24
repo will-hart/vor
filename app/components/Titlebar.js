@@ -7,6 +7,7 @@ import remote from 'remote';
 const BrowserWindow = remote.require('browser-window');
 
 import Helpbar from './Helpbar';
+import Settings from './Settings';
 
 
 const styles = {
@@ -17,6 +18,7 @@ const styles = {
     height: '40px',
     color: 'white',
     paddingLeft: '0.8em',
+    position: 'fixed',
 
     display: 'flex',
     flexDirection: 'row',
@@ -41,26 +43,33 @@ const styles = {
 
 class Titlebar extends React.Component {
   static propTypes = {
-    path: React.PropTypes.string.isRequired,
-    dirty: React.PropTypes.bool.isRequired,
-    words: React.PropTypes.number.isRequired
+    words: React.PropTypes.number.isRequired,
+    document: React.PropTypes.object.isRequired,
+    settings: React.PropTypes.object.isRequired,
+    onSaveSettings: React.PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      helpVisible: false
+      helpVisible: false,
+      settingsVisible: false
     };
 
     this._showHelp = this._showHelp.bind(this);
+    this._showSettings = this._showSettings.bind(this);
+    this._saveSettings = this._saveSettings.bind(this);
   }
 
-  _minimise() {
+  _minimise(e) {
+    e.preventDefault();
     BrowserWindow.getFocusedWindow().minimize();
+    return false;
   }
 
-  _maximise() {
+  _maximise(e) {
+    e.preventDefault();
     const win = BrowserWindow.getFocusedWindow();
 
     if (win.isMaximized()) {
@@ -68,20 +77,42 @@ class Titlebar extends React.Component {
     } else {
       win.maximize();
     }
+
+    return false;
   }
 
-  _close() {
+  _close(e) {
+    e.preventDefault();
     BrowserWindow.getFocusedWindow().close();
+    return false;
   }
 
-  _showHelp() {
+  _showHelp(e) {
+    e.preventDefault();
     this.setState({
       helpVisible: !this.state.helpVisible
+    });
+    return false;
+  }
+
+  _showSettings(e) {
+    e.preventDefault();
+    this.setState({
+      settingsVisible: !this.state.settingsVisible
+    });
+    return false;
+  }
+
+  _saveSettings(settings) {
+    console.log('Saving Settings');
+    this.props.onSaveSettings(settings);
+    this.setState({
+      settingsVisible: false
     });
   }
 
   render() {
-    const filePath = this.props.path;
+    const filePath = this.props.document.path;
     let fileDir;
     let fileName;
 
@@ -92,11 +123,13 @@ class Titlebar extends React.Component {
       fileDir = 'New Document';
     }
 
-    const wordCountClass = 'word-count' + (this.props.dirty ? ' dirty' : '');
+    const wordCountClass = 'word-count' + (this.props.document.dirty ? ' dirty' : '');
 
     return (
       <div>
         {this.state.helpVisible === true ? <Helpbar /> : ''}
+        {this.state.settingsVisible === true ? <Settings onCancel={this._showSettings} onSave={this._saveSettings} /> : ''}
+
         <div className="is-draggable" style={styles.wrapper}>
           <div className="is-inline is-unselectable">
             <Icon name="bars" className="is-not-draggable" style={styles.icon} onDoubleClick={this._close} />
@@ -105,7 +138,7 @@ class Titlebar extends React.Component {
               {fileDir === 'New Document' ? '' : path.sep}
             </span>
             <strong style={{ color: '#FFF' }}>{fileName}</strong>
-            {fileDir !== 'New Document' && this.props.dirty ? '*' : ''}
+            {fileDir !== 'New Document' && this.props.document.dirty ? '*' : ''}
           </div>
 
           <div className="is-inline is-unselectable">
@@ -114,17 +147,20 @@ class Titlebar extends React.Component {
             </span>
 
             <span className="is-not-draggable" style={styles.buttonGroup}>
-              <span style={styles.windowButton} className="window-help-button">
-                <Icon style={styles.icon} name="question" onClick={this._showHelp} />
+              <span style={styles.windowButton} className="window-help-button" onClick={this._showHelp}>
+                <Icon style={styles.icon} name="question"/>
               </span>
-              <span style={styles.windowButton} className="window-button">
-                <Icon style={styles.icon} name="angle-double-down" onClick={this._minimise} />
+              <span style={styles.windowButton} className="window-help-button" onClick={this._showSettings}>
+                <Icon style={styles.icon} name="cogs" />
               </span>
-              <span style={styles.windowButton} className="window-button">
-                <Icon style={styles.icon} name="clone" onClick={this._maximise} />
+              <span style={styles.windowButton} className="window-button" onClick={this._minimise}>
+                <Icon style={styles.icon} name="angle-double-down" o/>
               </span>
-              <span style={styles.windowButton} className="window-close-button">
-                <Icon style={styles.icon} name="close" onClick={this._close} />
+              <span style={styles.windowButton} className="window-button" onClick={this._maximise}>
+                <Icon style={styles.icon} name="clone" />
+              </span>
+              <span style={styles.windowButton} className="window-close-button" onClick={this._close}>
+                <Icon style={styles.icon} name="close" />
               </span>
             </span>
           </div>

@@ -6,7 +6,6 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.css';
 
-// require('spellchecker/build/Release/spellchecker.node');
 import spellchecker from 'spellchecker';
 
 import { loadInitialState } from './utils/fileOperations';
