@@ -53,8 +53,14 @@ class Settings extends React.Component {
   }
 
   _filePathChanged(p) {
+    let newPath = '';
+
+    if (p) {
+      newPath = p[0];
+    }
+
     this.setState({
-      bibtexPath: p
+      bibtexPath: newPath
     });
   }
 

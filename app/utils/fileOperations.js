@@ -51,13 +51,14 @@ export const loadFile = (filePath, errorValue = undefined) => {
   try {
     fs.accessSync(filePath, fs.R_OK);
   } catch (e) {
+    console.log('Error accessing file', e);
     return errorValue;
   }
 
   try {
     return fs.readFileSync(filePath, 'utf8');
   } catch (e) {
-    console.error('Error parsing JSON from file', filePath);
+    console.error('Error parsing file', filePath);
   }
 };
 
