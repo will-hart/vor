@@ -19,8 +19,6 @@ class Citation extends Inline {
   }
   get contains() { return null; }
   get draggable() { return false; }
-  get kind() { console.warn('Use NodeKind here on upgrade to 0.4.0'); return 'inline'; }
-  set kind(k) { console.warn('Ignored seting MathsInline Node Kind to', k); }
 }
 
 Citation.register('parseDOM', 'span', {
