@@ -69,7 +69,6 @@ const scanDelims = (state, start) => {
     delims: count
   };
 
-  console.log(state.src.charCodeAt(pos), result);
   return result;
 };
 
