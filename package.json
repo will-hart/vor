@@ -94,6 +94,7 @@
   "dependencies": {
     "bib2json": "0.0.1",
     "bulma": "0.0.14",
+    "classnames": "^2.2.3",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
     "katex": "^0.5.1",

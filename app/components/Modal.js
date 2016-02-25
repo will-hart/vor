@@ -21,8 +21,10 @@ const styles = {
   container: {
     margin: 0,
     padding: '20px',
-    minWidth: '80%',
-    minHeight: '80%',
+    width: '60%',
+    height: '60%',
+    minWidth: '800px',
+    minHeight: '800px',
     background: 'white',
     overflowY: 'auto',
     position: 'relative'
