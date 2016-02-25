@@ -71,19 +71,21 @@ const _doSave = (text, filePath) => {
 
 export function save() {
   return (dispatch, getState) => {
-    const { markdown } = getState();
+    setTimeout(() => {
+      const { markdown } = getState();
 
-    if (markdown.path === '') {
-      getSaveFilePath(paths => {
-        if (paths !== undefined) {
-          dispatch(_doSave(markdown.text, paths));
-        } else {
-          console.warn('No path found! Aborting save.');
-        }
-      });
-    } else {
-      dispatch(_doSave(markdown.text, markdown.path));
-    }
+      if (markdown.path === '') {
+        getSaveFilePath(paths => {
+          if (paths !== undefined) {
+            dispatch(_doSave(markdown.text, paths));
+          } else {
+            console.warn('No path found! Aborting save.');
+          }
+        });
+      } else {
+        dispatch(_doSave(markdown.text, markdown.path));
+      }
+    }, 500);
   };
 }
 
