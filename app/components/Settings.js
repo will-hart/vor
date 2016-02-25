@@ -41,7 +41,7 @@ class Settings extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = Object.assign({}, { bibTextPath: '' }, this.props.settings);
+    this.state = Object.assign({}, { bibtexPath: '', pandocPath: '' }, this.props.settings);
 
     this._filePathChanged = this._filePathChanged.bind(this);
     this._getFilePath = this._getFilePath.bind(this);
@@ -52,7 +52,7 @@ class Settings extends React.Component {
     this.props.onSave(this.state);
   }
 
-  _filePathChanged(p) {
+  _filePathChanged(p, varName) {
     let newPath = '';
 
     if (p) {
@@ -60,14 +60,20 @@ class Settings extends React.Component {
     }
 
     this.setState({
-      bibtexPath: newPath
+      [varName]: newPath
     });
   }
 
-  _getFilePath() {
-    getFilePath(this._filePathChanged, [
+  _getFilePath(varName) {
+    getFilePath((p) => this._filePathChanged(p, varName), [
       { name: 'Bibtex', extensions: ['bib'] },
       { name: 'Text', extensions: ['txt'] }
+    ]);
+  }
+
+  _getExecutablePath(varName) {
+    getFilePath((p) => this._filePathChanged(p, varName), [
+      { name: 'Executable', extensions: ['exe'] }
     ]);
   }
 
@@ -94,8 +100,16 @@ class Settings extends React.Component {
             <label className="label">BibTex file path</label>
           </p>
           <p className="control is-grouped">
-            <input className="input" type="text" placeholder="File Path" onClick={this._getFilePath} disabled value={this.state.bibtexPath} />
-            <a className="button is-info" onClick={this._getFilePath}>Select</a>
+            <input className="input" type="text" placeholder="File Path" onClick={() => this._getFilePath('bibtexPath')} disabled value={this.state.bibtexPath} />
+            <a className="button is-info" onClick={() => this._getFilePath('bibtexPath')}>Select</a>
+          </p>
+
+          <p className="control">
+            <label className="label">Pandoc executable path</label>
+          </p>
+          <p className="control is-grouped">
+            <input className="input" type="text" placeholder="Pandoc Path" onClick={() => this._getExecutablePath('pandocPath')} disabled value={this.state.pandocPath} />
+            <a className="button is-info" onClick={() => this._getExecutablePath('pandocPath')}>Select</a>
           </p>
 
         </div>
