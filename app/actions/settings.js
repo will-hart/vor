@@ -7,7 +7,7 @@ function save(settingsDelta) {
   const { bibtexPath } = settingsDelta;
 
   if (bibtexPath) {
-    CitationManager.setPath(bibtexPath[0]);
+    CitationManager.setPath(bibtexPath);
   }
 
   return {
