@@ -89,16 +89,20 @@ class Titlebar extends React.Component {
 
   _showHelp(e) {
     e.preventDefault();
+    const visible = !this.state.helpVisible;
     this.setState({
-      helpVisible: !this.state.helpVisible
+      helpVisible: visible,
+      settingsVisible: visible ? false : this.state.settingsVisible
     });
     return false;
   }
 
   _showSettings(e) {
     e.preventDefault();
+    const visible = !this.state.settingsVisible;
     this.setState({
-      settingsVisible: !this.state.settingsVisible
+      helpVisible: visible ? false : this.state.helpVisible,
+      settingsVisible: visible
     });
     return false;
   }

@@ -1,28 +1,10 @@
 import React from 'react';
 
-import { Colours } from '../Constants';
+import Modal from './Modal';
 
 import { getFilePath } from '../utils/fileOperations';
 
 const styles = {
-  wrapper: {
-    position: 'fixed',
-    top: '40px',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: Colours.primaryDark90Percent,
-    margin: 0,
-    padding: '30px',
-    zIndex: 10
-  },
-  container: {
-    margin: 0,
-    padding: '20px',
-    background: 'white',
-    overflowY: 'auto',
-    position: 'relative'
-  },
   closeButton: {
     position: 'absolute',
     top: '10px',
@@ -79,41 +61,37 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <div style={styles.wrapper}>
-        <div style={styles.container}>
+      <Modal>
+        <span style={styles.closeButton}>
+          <a className="button is-danger is-outlined" onClick={this.props.onCancel}>Cancel</a>
+          {' '}
+          <a className="button is-success" onClick={this._doSave}>Save</a>
+        </span>
 
-          <span style={styles.closeButton}>
-            <a className="button is-danger is-outlined" onClick={this.props.onCancel}>Cancel</a>
-            {' '}
-            <a className="button is-success" onClick={this._doSave}>Save</a>
-          </span>
+        <h1 className="title">Settings</h1>
+        <p>
+          Settings are saved in your data directory in the
+          <code>settings.json</code> file
+        </p>
 
-          <h1 className="title">Settings</h1>
-          <p>
-            Settings are saved in your data directory in the
-            <code>settings.json</code> file
-          </p>
+        <hr />
 
-          <hr />
+        <p className="control">
+          <label className="label">BibTex file path</label>
+        </p>
+        <p className="control is-grouped">
+          <input className="input" type="text" placeholder="File Path" onClick={() => this._getFilePath('bibtexPath')} disabled value={this.state.bibtexPath} />
+          <a className="button is-info" onClick={() => this._getFilePath('bibtexPath')}>Select</a>
+        </p>
 
-          <p className="control">
-            <label className="label">BibTex file path</label>
-          </p>
-          <p className="control is-grouped">
-            <input className="input" type="text" placeholder="File Path" onClick={() => this._getFilePath('bibtexPath')} disabled value={this.state.bibtexPath} />
-            <a className="button is-info" onClick={() => this._getFilePath('bibtexPath')}>Select</a>
-          </p>
-
-          <p className="control">
-            <label className="label">Pandoc executable path</label>
-          </p>
-          <p className="control is-grouped">
-            <input className="input" type="text" placeholder="Pandoc Path" onClick={() => this._getExecutablePath('pandocPath')} disabled value={this.state.pandocPath} />
-            <a className="button is-info" onClick={() => this._getExecutablePath('pandocPath')}>Select</a>
-          </p>
-
-        </div>
-      </div>
+        <p className="control">
+          <label className="label">Pandoc executable path</label>
+        </p>
+        <p className="control is-grouped">
+          <input className="input" type="text" placeholder="Pandoc Path" onClick={() => this._getExecutablePath('pandocPath')} disabled value={this.state.pandocPath} />
+          <a className="button is-info" onClick={() => this._getExecutablePath('pandocPath')}>Select</a>
+        </p>
+      </Modal>
     );
   }
 }
