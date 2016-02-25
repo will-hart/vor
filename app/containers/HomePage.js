@@ -6,6 +6,7 @@ import { open, save, update, create } from '../actions/markdown';
 import { save as saveSettings } from '../actions/settings';
 const combinedActions = { open, save, update, create, saveSettings };
 
+import KeyHandler from './KeyHandler';
 import Titlebar from '../components/Titlebar';
 import Editor from '../components/Editor';
 
@@ -34,7 +35,7 @@ class DumbHomePage extends Component {
     }
 
     return (
-      <div>
+      <KeyHandler {...this.props}>
         <Titlebar
           words={words}
           document={document}
@@ -48,7 +49,7 @@ class DumbHomePage extends Component {
           onSave={this.props.save}
           onOpen={this.props.open}
         />
-      </div>
+      </KeyHandler>
     );
   }
 }
