@@ -19,9 +19,11 @@ if (initialState === null) {
 } else {
   store = configureStore(initialState);
 
-  const { bibtexPath } = initialState.settings;
-  if (bibtexPath) {
-    CitationManager.setPath(bibtexPath);
+  if (initialState.settings !== undefined) {
+    const { bibtexPath } = initialState.settings;
+    if (bibtexPath) {
+      CitationManager.setPath(bibtexPath);
+    }
   }
 }
 
