@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { open, save, update, create } from '../actions/markdown';
+import { save as saveSettings } from '../actions/settings';
+const combinedActions = { open, save, update, create, saveSettings };
 
 import Titlebar from '../components/Titlebar';
 import Editor from '../components/Editor';
@@ -10,15 +12,17 @@ import Editor from '../components/Editor';
 class DumbHomePage extends Component {
   static propTypes = {
     document: React.PropTypes.object.isRequired,
+    settings: React.PropTypes.object.isRequired,
 
     create: React.PropTypes.func.isRequired,
+    open: React.PropTypes.func.isRequired,
     save: React.PropTypes.func.isRequired,
-    update: React.PropTypes.func.isRequired,
-    open: React.PropTypes.func.isRequired
+    saveSettings: React.PropTypes.func.isRequired,
+    update: React.PropTypes.func.isRequired
   };
 
   render() {
-    const { document } = this.props;
+    const { document, settings } = this.props;
     const { text } = document;
 
     let words;
@@ -31,7 +35,12 @@ class DumbHomePage extends Component {
 
     return (
       <div>
-        <Titlebar words={words} path={document.path} dirty={document.dirty} />
+        <Titlebar
+          words={words}
+          document={document}
+          settings={settings}
+          onSaveSettings={this.props.saveSettings}
+        />
 
         <Editor text={text}
           onUpdate={this.props.update}
@@ -46,12 +55,13 @@ class DumbHomePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    document: state.markdown
+    document: state.markdown,
+    settings: state.settings
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ open, save, update, create }, dispatch);
+  return bindActionCreators(combinedActions, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DumbHomePage);

@@ -6,13 +6,24 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.css';
 
-// require('spellchecker/build/Release/spellchecker.node');
 import spellchecker from 'spellchecker';
 
 import { loadInitialState } from './utils/fileOperations';
+import CitationManager from './utils/CitationManager';
 
 const initialState = loadInitialState();
-const store = initialState === null ? configureStore() : configureStore(initialState);
+let store;
+
+if (initialState === null) {
+  store = configureStore();
+} else {
+  store = configureStore(initialState);
+
+  const { bibtexPath } = initialState.settings;
+  if (bibtexPath) {
+    CitationManager.setPath(bibtexPath);
+  }
+}
 
 render(
   <Provider store={store}>

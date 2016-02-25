@@ -4,24 +4,26 @@ import path from 'path';
 import { remote } from 'electron';
 const dialog = remote.require('dialog');
 
-export const dataPath = path.join(remote.app.getPath('userData'), 'cache.txt');
+export const basePath = remote.app.getPath('userData');
+export const dataPath = path.join(basePath, 'cache.json');
+export const settingsPath = path.join(basePath, 'vorSettings.json');
 
-export const getFilePath = (callback) => {
-  dialog.showOpenDialog({
-    filters: [
+export const getFilePath = (callback, filters = [
       { name: 'Markdown', extensions: ['md', 'markdown'] },
       { name: 'Text', extensions: ['txt'] }
-    ],
+]) => {
+  dialog.showOpenDialog({
+    filters,
     title: 'Open a document'
   }, callback);
 };
 
-export const getSaveFilePath = (callback) => {
-  dialog.showSaveDialog({
-    filters: [
+export const getSaveFilePath = (callback, filters = [
       { name: 'Markdown', extensions: ['md'] },
       { name: 'Text', extensions: ['txt'] }
-    ],
+]) => {
+  dialog.showSaveDialog({
+    filters,
     title: 'Save a document'
   }, callback);
 };
@@ -49,13 +51,14 @@ export const loadFile = (filePath, errorValue = undefined) => {
   try {
     fs.accessSync(filePath, fs.R_OK);
   } catch (e) {
+    console.log('Error accessing file', e);
     return errorValue;
   }
 
   try {
     return fs.readFileSync(filePath, 'utf8');
   } catch (e) {
-    console.error('Error parsing JSON from file', filePath);
+    console.error('Error parsing file', filePath);
   }
 };
 
@@ -70,40 +73,47 @@ export const getLastModDate = (filePath) => {
 
 export const loadInitialState = () => {
   // load cache from file
-  let cachedState = null;
+  let markdown;
+  let settings;
 
   try {
-    cachedState = JSON.parse(loadFile(dataPath));
+    markdown = JSON.parse(loadFile(dataPath));
   } catch (e) {
     console.warn('Error loading cache: ', e);
-    return null;
   }
+
+  try {
+    settings = JSON.parse(loadFile(settingsPath));
+  } catch (e) {
+    console.warn('Error loading settings: ', e);
+  }
+
+  const combined = { markdown, settings };
 
   // check if we have a file open
-  if (cachedState.markdown.path === '') {
-    return cachedState;
+  if (markdown === undefined || markdown.path === '') {
+    return combined;
   }
 
-  const lastModded = getLastModDate(cachedState.markdown.path);
+  const lastModded = getLastModDate(markdown.path);
 
   // check the file still exists
   if (lastModded === null) {
     alert('It looks like the file you had open when you last closed the editor has been renamed or deleted. Please re-save the file to avoid losing your changes.');
-    cachedState.markdown.path = '';
-    cachedState.markdown.dirty = true;
-    return cachedState;
+    markdown.path = '';
+    markdown.dirty = true;
+    return combined;
   }
 
   // check that the file wasn't modified
   if (Math.floor(lastModded.getTime() / 1000) !==
-    Math.floor(new Date(cachedState.markdown.lastMod).getTime() / 1000)) {
-
-    if (!cachedState.markdown.dirty ||
+    Math.floor(new Date(markdown.lastMod).getTime() / 1000)) {
+    if (!markdown.dirty ||
       askQuestion('Reload Changes',
         'It looks like the file was modified since you last used Emma. Would you like to reload changes from file? If you click "No", you may overwrite any changes you have made since you last saved with the Emma editor.', false)) {
-      cachedState.markdown.text = loadFile(cachedState.markdown.path);
+      markdown.text = loadFile(markdown.path);
     }
   }
 
-  return cachedState;
+  return combined;
 };

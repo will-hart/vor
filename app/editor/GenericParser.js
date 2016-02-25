@@ -63,11 +63,13 @@ const scanDelims = (state, start) => {
     }
   }
 
-  return {
+  const result = {
     can_open: canOpen,
     can_close: canClose,
     delims: count
   };
+
+  return result;
 };
 
 
