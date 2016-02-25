@@ -111,3 +111,7 @@ html, body {
 .word-count.dirty {
   background: #AA2222;
 }
+
+code {
+  font-size: 1.1em;
+}
