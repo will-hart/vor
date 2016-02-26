@@ -22,9 +22,9 @@ const styles = {
     margin: 0,
     padding: '20px',
     width: '60%',
-    height: '60%',
+    maxHeight: '80%',
     minWidth: '800px',
-    minHeight: '800px',
+    minHeight: '50px',
     background: 'white',
     overflowY: 'auto',
     position: 'relative'
@@ -44,8 +44,8 @@ class Modal extends React.Component {
 
   render() {
     return (
-      <div style={styles.wrapper}>
-        <div style={styles.container}>
+      <div style={styles.wrapper} className="is-not-draggable">
+        <div style={styles.container} className="is-not-draggable">
           {this.props.children}
         </div>
       </div>

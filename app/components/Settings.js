@@ -62,7 +62,7 @@ class Settings extends React.Component {
   render() {
     return (
       <Modal>
-        <span style={styles.closeButton}>
+        <span style={styles.closeButton} className="is-not-draggable">
           <a className="button is-danger is-outlined" onClick={this.props.onCancel}>Cancel</a>
           {' '}
           <a className="button is-success" onClick={this._doSave}>Save</a>
