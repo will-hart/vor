@@ -42,22 +42,9 @@ Citation.prototype.serializeMarkdown = (ser, node) => {
   ser.text(md, false);
 };
 
-Citation.register('parseMarkdown', 'citation', {
-  parse: function parse(state, tok) {
-    state.addNode(this, {
-      source: tok.content
-    });
-  }
-});
-
 // install the maths plugin
 Citation.register('configureMarkdown', 'citation', parser => {
-  return parser.use(CitationParser, {
-    inlineRenderer: citationRenderer,
-    inlineOpen: '[\u0040',
-    inlineClose: ']',
-    tokenName: 'citation'
-  });
+  return parser.use(CitationParser);
 });
 
 Citation.register('command', 'insert', {
